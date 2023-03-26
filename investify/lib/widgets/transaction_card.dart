@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:investify/widgets/transaction_details.dart';
 
 import '../models/transaction.dart';
 import 'app_text_bold.dart';
 import 'app_text_medium.dart';
 
 class TransactionCard extends StatelessWidget {
+  final String id;
   final double amount;
   final TransactionType transactionType;
+  final TransactionStatus status;
   final DateTime date;
-  final VoidCallback onTap;
+  // final VoidCallback onTap;
 
   const TransactionCard({
     super.key,
     required this.amount,
     required this.transactionType,
     required this.date,
-    required this.onTap,
+    required this.id,
+    required this.status,
   });
+
+  void _transactionDetails(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed(
+      TransactionDetails.routeName,
+      arguments: id,
+    );
+  }
 
   Widget get transactionIcon {
     switch (transactionType) {
@@ -90,7 +101,7 @@ class TransactionCard extends StatelessWidget {
     NumberFormat myFormat = NumberFormat.decimalPattern('en_us');
     DateFormat dateFormat = DateFormat.yMMMd().add_jm();
     return InkWell(
-      onTap: onTap,
+      onTap: () => _transactionDetails(context),
       child: Container(
         margin: const EdgeInsets.only(bottom: 8.0),
         child: Row(
@@ -123,7 +134,7 @@ class TransactionCard extends StatelessWidget {
                       height: 6,
                     ),
                     Text(
-                      '${dateFormat.format(date)}',
+                      dateFormat.format(date),
                       style: const TextStyle(fontSize: 12, color: Colors.white),
                     )
                   ],

@@ -1,29 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:investify/widgets/investment_details.dart';
 
 import 'app_text_bold.dart';
 
 class MarketCard extends StatelessWidget {
+  final String id;
   final String title;
   final double price;
   final String description;
   final String imageUrl;
-  final VoidCallback onTap;
 
   const MarketCard({
     super.key,
     required this.title,
     required this.price,
     required this.description,
-    required this.onTap,
     required this.imageUrl,
+    required this.id,
   });
+
+  void onTap(BuildContext ctx) {
+    Navigator.of(ctx).pushNamed(InvestmentDetails.routeName, arguments: id);
+  }
 
   @override
   Widget build(BuildContext context) {
     NumberFormat myFormat = NumberFormat.decimalPattern('en_us');
     return InkWell(
-      onTap: onTap,
+      onTap: () => onTap(context),
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.only(top: 16),
@@ -76,7 +81,7 @@ class MarketCard extends StatelessWidget {
                     height: 4,
                   ),
                   Text(
-                    "Iba Oloja, Ibeju Lekki, Lagos.",
+                    description,
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,

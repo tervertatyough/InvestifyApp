@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-import 'package:investify/widgets/app_text_light.dart';
-import 'package:investify/widgets/app_text_medium.dart';
+import '../dummy_data.dart';
+import '../widgets/app_text_light.dart';
+import '../widgets/app_text_medium.dart';
 
 class TransactionDetails extends StatelessWidget {
   static const routeName = "transaction_details";
@@ -15,7 +17,11 @@ class TransactionDetails extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             AppTextLight(text: title, size: 16),
-            AppTextMedium(text: value, size: 16)
+            AppTextMedium(
+              text: value,
+              size: 16,
+              color: Colors.amber,
+            )
           ],
         ),
         const Divider(
@@ -31,6 +37,13 @@ class TransactionDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    NumberFormat myFormat = NumberFormat.decimalPattern('en_us');
+    DateFormat dateFormat = DateFormat.yMMMd().add_jm();
+    final transactionId = ModalRoute.of(context)!.settings.arguments as String;
+    final selectedTransaction = DUMMY_TRANSACTIONS.firstWhere(
+      (transaction) => transaction.id == transactionId,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Transaction Details"),
@@ -41,17 +54,19 @@ class TransactionDetails extends StatelessWidget {
         margin: const EdgeInsets.only(top: 16),
         height: 300,
         decoration: const BoxDecoration(
-          color: Color.fromRGBO(0, 128, 128, 0.05),
+          color: Color(0xFF2B2B2B),
         ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              transactionTile("Status", "Successful"),
-              transactionTile("Type", "Bought Unit"),
-              transactionTile("Amount", "N 600,000.00"),
-              transactionTile("ID", "5f92cbf10cf217478ba93561"),
-              transactionTile("Date", "Mar 19, 2023 5:20PM")
+              transactionTile("Status", selectedTransaction.status.name),
+              transactionTile("Type", selectedTransaction.transactionType.name),
+              transactionTile(
+                  "Amount", 'N ${myFormat.format(selectedTransaction.amount)}'),
+              transactionTile("ID", selectedTransaction.id),
+              transactionTile(
+                  "Date", dateFormat.format(selectedTransaction.date))
             ],
           ),
         ),

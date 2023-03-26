@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:investify/dummy_data.dart';
 
 import 'app_button.dart';
 import 'app_text_bold.dart';
@@ -7,6 +8,7 @@ import 'buy_share_modal.dart';
 import 'image_panel.dart';
 
 class InvestmentDetails extends StatefulWidget {
+  static const routeName = "investment-details";
   const InvestmentDetails({super.key});
 
   @override
@@ -60,11 +62,15 @@ class _InvestmentDetailsState extends State<InvestmentDetails>
 
   @override
   Widget build(BuildContext context) {
-    TabController _tabcontroller = TabController(length: 2, vsync: this);
+    TabController tabcontroller = TabController(length: 2, vsync: this);
+    final investmentId = ModalRoute.of(context)!.settings.arguments as String;
+    final selectedInvestment = DUMMY_PROPERTIES.firstWhere(
+      (investment) => investment.id == investmentId,
+    );
     return Scaffold(
       backgroundColor: const Color(0xFF202020),
       appBar: AppBar(
-        title: const Text("Investment Details"),
+        title: Text(selectedInvestment.title),
         backgroundColor: const Color.fromRGBO(0, 128, 128, 0.2),
       ),
       body: SingleChildScrollView(
@@ -139,29 +145,27 @@ class _InvestmentDetailsState extends State<InvestmentDetails>
               ),
               child: Column(
                 children: [
-                  Container(
-                    child: TabBar(
-                      controller: _tabcontroller,
-                      tabs: const [
-                        Tab(
-                          text: "Project Details",
-                        ),
-                        Tab(
-                          text: "Property Details",
-                        )
-                      ],
-                    ),
+                  TabBar(
+                    controller: tabcontroller,
+                    tabs: const [
+                      Tab(
+                        text: "Project Details",
+                      ),
+                      Tab(
+                        text: "Property Details",
+                      )
+                    ],
                   ),
-                  Container(
+                  SizedBox(
                     width: double.maxFinite,
                     height: 700,
                     child: TabBarView(
-                      controller: _tabcontroller,
+                      controller: tabcontroller,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            infoItem("Project ID", "COM100001"),
+                            infoItem("Project ID", selectedInvestment.id),
                             infoItem("Asset Category", "Commercial"),
                             infoItem("Project Value", "₦5,000,000.00"),
                             infoItem("Total Shares", "1000"),
@@ -199,7 +203,7 @@ class _InvestmentDetailsState extends State<InvestmentDetails>
                           children: [
                             infoItem("Property Size", "500SQM"),
                             infoItem("Property Address",
-                                "No. 19, Alex Oxley ST, Awoyaya, Lagos."),
+                                selectedInvestment.description),
                             infoItem("Property Status", "Occupied"),
                             infoItem("Property Document", "Deed of Assignment"),
                             infoItem("Property Title", "C of O")

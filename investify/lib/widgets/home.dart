@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:investify/widgets/transaction_details.dart';
 
+import 'transactions.dart';
 import '../dummy_data.dart';
 import 'networth_panel.dart';
 import 'deposit.dart';
 import 'sell.dart';
 import 'send.dart';
-import 'transactions.dart';
+import 'transaction_screen.dart';
 import 'withdraw.dart';
 import 'app_text_bold.dart';
 import 'app_text_medium.dart';
 import 'home_action.dart';
-import 'transaction_card.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  final transactions = DUMMY_TRANSACTIONS;
+
+  Home({super.key});
 
   void _onTap(BuildContext ctx) {
     Navigator.of(ctx).push(MaterialPageRoute(builder: (_) {
@@ -42,17 +43,12 @@ class Home extends StatelessWidget {
 
   void _transactions(BuildContext ctx) {
     Navigator.of(ctx).push(MaterialPageRoute(builder: (_) {
-      return const Transactions();
+      return const TransactionScreen();
     }));
-  }
-
-  void _transactionDetails(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed(TransactionDetails.routeName);
   }
 
   @override
   Widget build(BuildContext context) {
-    final transactions = DUMMY_TRANSACTIONS;
     return SafeArea(
       child: Column(
         // crossAxisAlignment: CrossAxisAlignment.center,
@@ -169,24 +165,9 @@ class Home extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(
-                    height: 8,
+                    height: 6,
                   ),
-                  Flexible(
-                    // height: 218,
-                    child: ListView.separated(
-                      itemCount: transactions.length,
-                      itemBuilder: (context, index) => TransactionCard(
-                        amount: transactions[index].amount,
-                        transactionType: transactions[index].transactionType,
-                        date: transactions[index].date,
-                        onTap: () => _transactionDetails(context),
-                      ),
-                      separatorBuilder: (context, index) => const Divider(
-                        thickness: 1,
-                        color: Color.fromRGBO(196, 196, 196, 0.3),
-                      ),
-                    ),
-                  ),
+                  Transactions()
                 ],
               ),
             ),

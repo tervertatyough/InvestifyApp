@@ -21,12 +21,6 @@ class Invest extends StatefulWidget {
 class _InvestState extends State<Invest> {
   String dropDownValue = list.first;
 
-  void onTap(BuildContext ctx) {
-    Navigator.of(ctx).push(MaterialPageRoute(builder: (_) {
-      return InvestmentDetails();
-    }));
-  }
-
   void dropDownCallBack(String? selectedValue) {
     if (selectedValue is String) {
       setState(() {
@@ -78,7 +72,7 @@ class _InvestState extends State<Invest> {
                 child: ListView.builder(
               itemCount: loadedProperties.length,
               itemBuilder: (context, index) => InvestmentCard(
-                onTap: () => onTap(context),
+                id: loadedProperties[index].id,
                 title: loadedProperties[index].title,
                 description: loadedProperties[index].description,
                 imageUrl: loadedProperties[index].imageUrl,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:investify/widgets/app_text_medium.dart';
+import 'package:investify/widgets/authorization.dart';
 import 'package:investify/widgets/buy_success_screen.dart';
 
 import 'app_button.dart';
@@ -34,18 +35,21 @@ class _BuyShareModalState extends State<BuyShareModal> {
         children: [
           Container(
             height: 48,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             width: double.maxFinite,
             decoration: const BoxDecoration(
               color: Color(0xFF202020),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AppTextMedium(
+                const AppTextMedium(
                     text: "How many shares do you want to buy?", size: 14),
                 IconButton(
-                  onPressed: () {},
-                  icon: Icon(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
                     Icons.highlight_remove_outlined,
                     color: Colors.white,
                   ),
@@ -113,7 +117,15 @@ class _BuyShareModalState extends State<BuyShareModal> {
                 ),
                 AppButton(
                   title: "Buy Share",
-                  onPress: () => buy(context),
+                  // onPress: () => buy(context),
+                  onPress: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return const Authorization();
+                      },
+                    );
+                  },
                 )
               ],
             ),

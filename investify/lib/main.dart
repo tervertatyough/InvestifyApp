@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:investify/widgets/investment_details.dart';
 
 import './widgets/transaction_details.dart';
 import './widgets/buy_success_screen.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         ),
         home: const MyHomePage(),
         routes: {
+          InvestmentDetails.routeName: (ctx) => const InvestmentDetails(),
           Notifications.routeName: (ctx) => const Notifications(),
           MyAsset.routeName: (ctx) => const MyAsset(),
           AccountSettings.routeName: (ctx) => const AccountSettings(),
@@ -59,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int _selectedIndex = 0;
 
-  static const List<Widget> _widgetOptions = [
+  static List<Widget> _widgetOptions = [
     Home(),
     Invest(),
     Market(),
